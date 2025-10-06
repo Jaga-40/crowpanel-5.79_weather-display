@@ -314,7 +314,7 @@ String httpGETRequest(const char* url) {
   http.begin(client, url);
 
   // Set HTTP Request Timeout
-  const int httpTimeoutMs = 10000; // HTTP request timeout in milliseconds
+  const int httpTimeoutMs = 20000; // HTTP request timeout in milliseconds
   http.setTimeout(httpTimeoutMs);
 
   Serial.print("Sending HTTP GET request to: ");
@@ -487,6 +487,7 @@ String fetchWeatherData(bool useTestData = TEST_MODE) {
       case HTTP_CODE_BAD_GATEWAY:
       case HTTP_CODE_SERVICE_UNAVAILABLE:
       case HTTP_CODE_GATEWAY_TIMEOUT:
+      case HTTPC_ERROR_READ_TIMEOUT:
         Serial.println("Unexpected Error.");
         retryCount++;
         Serial.print("Retry attempt ");
@@ -497,7 +498,9 @@ String fetchWeatherData(bool useTestData = TEST_MODE) {
         break;
       default:
         exitLoop = true;
-        displayErrorMessage("Unknown Error.");
+        char numchar[10];
+        std::sprintf(numchar, "Unknown Error. httpResponseCode: %d", httpResponseCode);
+        displayErrorMessage(numchar);
         enterDeepSleep(false);
         break;
     }
