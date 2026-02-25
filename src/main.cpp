@@ -26,8 +26,14 @@ const bool TEST_MODE = false;      // Test mode (uses test data instead of the A
 // Display Settings
 const size_t FORECAST_COUNT = 5;   // Number of forecast periods to display
 
+// Deep-Sleep Settings
+const uint32_t SLEEP_INTERVAL_MINUTES = 60; // Interval in minutes between updates (default: 60 minutes)
+
 // E-Paper Settings
 const int EPD_BUFFER_SIZE = 27200; // Size of E-Paper display buffer
+
+// Temperature Unit Setting
+const int TEMPERATURE_UNIT = 0;    // 0 for Celsius, 1 for Fahrenheit
 
 //=============================================================================
 // Type Definitions
@@ -123,7 +129,7 @@ void enterDeepSleep(bool wakeup) {
   // Enter Deep-Sleep Mode
   if (wakeup) {
     // Wake Up After n minutes (default: 60 minites)
-    esp_sleep_enable_timer_wakeup(INTERVAL_IN_MINUTES * 60UL * 1000UL * 1000); // microseconds
+    esp_sleep_enable_timer_wakeup(SLEEP_INTERVAL_MINUTES * 60UL * 1000UL * 1000); // microseconds
   }
   esp_deep_sleep_start();
 }
